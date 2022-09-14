@@ -5,6 +5,8 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestClient {
 
@@ -34,16 +36,15 @@ public class RestClient {
         entity = new HttpEntity<>(newUser, headers);
         createUserAPI(entity);
         //update
-        User updatedUser = new User();
-        updatedUser.setId(2L);
-        updatedUser.setName("Thomas");
-        updatedUser.setLastName("Shelby");
-        updatedUser.setAge((byte) 21);
-        entity = new HttpEntity<>(updatedUser,headers);
+        newUser.setId(3L);
+        newUser.setName("Thomas");
+        newUser.setLastName("Shelby");
+        newUser.setAge((byte) 21);
+        entity = new HttpEntity<>(newUser, headers);
         updateUserAPI(entity);
         //delete
-        entity = new HttpEntity<>(updatedUser.getId(), headers);
-        //deleteUserAPI(entity);
+        entity = new HttpEntity<>(newUser, headers);
+        deleteUserAPI(entity, 3L);
     }
     public static void getAllUsersAPI(HttpEntity<Object> entity) {
         ResponseEntity <String> response = restTemplate.exchange(GET_ALL_USERS_API, HttpMethod.GET, entity, String.class);
@@ -52,17 +53,19 @@ public class RestClient {
         System.out.println(cookies);
     }
     public static void createUserAPI(HttpEntity<Object> entity) {
-        ResponseEntity <String> response = restTemplate.exchange(CREATE_USER_API,HttpMethod.POST, entity, String.class);
+        ResponseEntity <String> response = restTemplate.exchange(CREATE_USER_API,   HttpMethod.POST, entity, String.class);
         String newUserDetails = response.getBody();
         System.out.println(newUserDetails);
     }
     public static void updateUserAPI(HttpEntity<Object> entity) {
-        ResponseEntity <String> response = restTemplate.exchange(UPDATE_USER_API,HttpMethod.PUT, entity, String.class);
+        ResponseEntity <String> response = restTemplate.exchange(UPDATE_USER_API,    HttpMethod.PUT, entity, String.class);
         String updatedUserDetail = response.getBody();
         System.out.println(updatedUserDetail);
     }
-    public static void deleteUserAPI(HttpEntity<Object> entity) {
-        ResponseEntity <String> response = restTemplate.exchange(DELETE_USER_API,HttpMethod.DELETE, entity, String.class);
+    public static void deleteUserAPI(HttpEntity<Object> entity, Long id) {
+        Map<String, Long> map = new HashMap<>();
+        map.put("id", id);
+        ResponseEntity <String> response = restTemplate.exchange(DELETE_USER_API,   HttpMethod.DELETE, entity, String.class, id);
         String deletedUser = response.getBody();
         System.out.println(deletedUser);
     }
