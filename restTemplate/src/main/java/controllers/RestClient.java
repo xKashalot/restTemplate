@@ -14,19 +14,15 @@ public class RestClient {
     private static final String CREATE_USER_API = "http://94.198.50.185:7081/api/users";	// post
     private static final String UPDATE_USER_API = "http://94.198.50.185:7081/api/users";	// put
     private static final String DELETE_USER_API = "http://94.198.50.185:7081/api/users/{id}";	// delete
-
-    private static String cookies = "JSESSIONID=AD1399D2CEF750F35079A35B1764AE53; Path=/; HttpOnly";
     static RestTemplate restTemplate = new RestTemplate();
 
 
     public static void main(String[] args) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON ));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         //get
         getAllUsersAPI(entity);
-        headers.set("Cookie",cookies);
-        headers.setContentType(MediaType.APPLICATION_JSON);
         //create
         User newUser = new User();
         newUser.setId(3L);
@@ -36,7 +32,7 @@ public class RestClient {
         entity = new HttpEntity<>(newUser, headers);
         createUserAPI(entity);
         //update
-        newUser.setId(3L);
+        newUser.setId(2L);
         newUser.setName("Thomas");
         newUser.setLastName("Shelby");
         newUser.setAge((byte) 21);
@@ -44,13 +40,13 @@ public class RestClient {
         updateUserAPI(entity);
         //delete
         entity = new HttpEntity<>(newUser, headers);
-        deleteUserAPI(entity, 3L);
+        deleteUserAPI(entity, 2L);
     }
     public static void getAllUsersAPI(HttpEntity<Object> entity) {
         ResponseEntity <String> response = restTemplate.exchange(GET_ALL_USERS_API, HttpMethod.GET, entity, String.class);
         response.getHeaders().get("Set-Cookie").stream().forEach(System.out::println);
-        String cookies = response.getBody();
-        System.out.println(cookies);
+        String result = response.getBody();
+        System.out.println(result);
     }
     public static void createUserAPI(HttpEntity<Object> entity) {
         ResponseEntity <String> response = restTemplate.exchange(CREATE_USER_API,   HttpMethod.POST, entity, String.class);
@@ -59,8 +55,8 @@ public class RestClient {
     }
     public static void updateUserAPI(HttpEntity<Object> entity) {
         ResponseEntity <String> response = restTemplate.exchange(UPDATE_USER_API,    HttpMethod.PUT, entity, String.class);
-        String updatedUserDetail = response.getBody();
-        System.out.println(updatedUserDetail);
+        String updatedUserDetails = response.getBody();
+        System.out.println(updatedUserDetails);
     }
     public static void deleteUserAPI(HttpEntity<Object> entity, Long id) {
         Map<String, Long> map = new HashMap<>();
@@ -69,8 +65,4 @@ public class RestClient {
         String deletedUser = response.getBody();
         System.out.println(deletedUser);
     }
-
-
-
-
 }
