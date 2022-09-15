@@ -10,24 +10,21 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class RestTemplateApplication {
 
-	@Bean
-	public RestTemplate restTemplate(){
-		return new RestTemplate();
-	}
+	static RestClient restClient = new RestClient();
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestTemplateApplication.class, args);
 
 		//get
-		RestClient.getAllUsersAPI();
+		restClient.getAllUsersAPI();
 		//create
 		User user = new User(3L, "James", "Brown", (byte) 21);
-		RestClient.createUserAPI(user);
+		restClient.createUserAPI(user);
 		//update
 		user.setName("Thomas");
 		user.setLastName("Shelby");
-		RestClient.updateUserAPI(user);
+		restClient.updateUserAPI(user);
 		//delete
-		RestClient.deleteUserAPI(2L);
+		restClient.deleteUserAPI(3L);
 	}
 }
