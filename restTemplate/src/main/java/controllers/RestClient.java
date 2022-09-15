@@ -29,17 +29,17 @@ public class RestClient {
 
     public void createUserAPI(User user) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
         HttpEntity<User> entity = new HttpEntity<>(user, headers);
-        String response = restTemplate.exchange(CREATE_USER_API,   HttpMethod.POST, entity, String.class).getBody();
-        //String newUserDetails = response.getBody();
-        System.out.println(response + " - 1st piece of code");
+        ResponseEntity <String> response = restTemplate.exchange(CREATE_USER_API,   HttpMethod.POST, entity, String.class);
+        String newUserDetails = response.getBody();
+        System.out.println(newUserDetails + " - 1st piece of code");
     }
 
     public void updateUserAPI(User user) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
         HttpEntity<User> entity = new HttpEntity<>(user, headers);
         ResponseEntity <String> response = restTemplate.exchange(UPDATE_USER_API,    HttpMethod.PUT, entity, String.class);
@@ -49,7 +49,7 @@ public class RestClient {
 
     public void deleteUserAPI(Long id) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
         HttpEntity<User> entity = new HttpEntity<>(headers);
         ResponseEntity <String> response = restTemplate.exchange(DELETE_USER_API,   HttpMethod.DELETE, entity, String.class, id);

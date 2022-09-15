@@ -25,6 +25,6 @@ public class RestTemplateApplication {
 		user.setLastName("Shelby");
 		restClient.updateUserAPI(user);
 		//delete
-		restClient.deleteUserAPI(3L);
+		restClient.deleteUserAPI(2L);
 	}
 }
